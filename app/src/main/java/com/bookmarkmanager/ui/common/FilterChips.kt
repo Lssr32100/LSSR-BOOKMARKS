@@ -1,11 +1,12 @@
 package com.bookmarkmanager.ui.common
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -13,72 +14,101 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.bookmarkmanager.R
 import com.bookmarkmanager.data.model.BookmarkType
 import com.bookmarkmanager.data.model.Category
-import com.bookmarkmanager.ui.screens.home.FilterOption
-import com.bookmarkmanager.ui.theme.FreeColor
-import com.bookmarkmanager.ui.theme.FreemiumColor
-import com.bookmarkmanager.ui.theme.PaidColor
+import com.bookmarkmanager.ui.theme.TypeFree
+import com.bookmarkmanager.ui.theme.TypeFreemium
+import com.bookmarkmanager.ui.theme.TypePaid
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterChips(
-    categories: List<Category>,
-    selectedFilter: FilterOption,
-    onFilterSelected: (FilterOption) -> Unit
+fun TypeFilterChips(
+    selectedType: BookmarkType?,
+    onTypeSelected: (BookmarkType?) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    LazyRow(
-        modifier = Modifier
+    val scrollState = rememberScrollState()
+    
+    Row(
+        modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        contentPadding = PaddingValues(horizontal = 16.dp),
+            .horizontalScroll(scrollState)
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // All filter
-        item {
-            FilterChip(
-                selected = selectedFilter is FilterOption.All,
-                onClick = { onFilterSelected(FilterOption.All) },
-                label = { Text(stringResource(R.string.filter_all)) },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            )
-        }
+        // All types chip
+        ElevatedFilterChip(
+            selected = selectedType == null,
+            onClick = { onTypeSelected(null) },
+            label = { Text("All") }
+        )
         
-        // Type filters
-        items(BookmarkType.values()) { type ->
-            val (label, color) = when (type) {
-                BookmarkType.FREE -> Pair(stringResource(R.string.type_free), FreeColor)
-                BookmarkType.PAID -> Pair(stringResource(R.string.type_paid), PaidColor)
-                BookmarkType.FREEMIUM -> Pair(stringResource(R.string.type_freemium), FreemiumColor)
-            }
-            
-            FilterChip(
-                selected = selectedFilter is FilterOption.ByType && selectedFilter.type == type,
-                onClick = { onFilterSelected(FilterOption.ByType(type)) },
-                label = { Text(label) },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = color.copy(alpha = 0.2f),
-                    selectedLabelColor = color
-                )
+        // Free chip
+        ElevatedFilterChip(
+            selected = selectedType == BookmarkType.FREE,
+            onClick = { onTypeSelected(BookmarkType.FREE) },
+            label = { Text("Free") },
+            colors = FilterChipDefaults.elevatedFilterChipColors(
+                selectedContainerColor = TypeFree.copy(alpha = 0.2f),
+                selectedLabelColor = TypeFree
             )
-        }
+        )
         
-        // Category filters
-        items(categories) { category ->
-            FilterChip(
-                selected = selectedFilter is FilterOption.ByCategory && selectedFilter.categoryId == category.id,
-                onClick = { onFilterSelected(FilterOption.ByCategory(category.id)) },
-                label = { Text(category.name) },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                    selectedLabelColor = MaterialTheme.colorScheme.onTertiaryContainer
-                )
+        // Paid chip
+        ElevatedFilterChip(
+            selected = selectedType == BookmarkType.PAID,
+            onClick = { onTypeSelected(BookmarkType.PAID) },
+            label = { Text("Paid") },
+            colors = FilterChipDefaults.elevatedFilterChipColors(
+                selectedContainerColor = TypePaid.copy(alpha = 0.2f),
+                selectedLabelColor = TypePaid
+            )
+        )
+        
+        // Freemium chip
+        ElevatedFilterChip(
+            selected = selectedType == BookmarkType.FREEMIUM,
+            onClick = { onTypeSelected(BookmarkType.FREEMIUM) },
+            label = { Text("Freemium") },
+            colors = FilterChipDefaults.elevatedFilterChipColors(
+                selectedContainerColor = TypeFreemium.copy(alpha = 0.2f),
+                selectedLabelColor = TypeFreemium
+            )
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CategoryFilterChips(
+    categories: List<Category>,
+    selectedCategoryId: Int?,
+    onCategorySelected: (Int?) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val scrollState = rememberScrollState()
+    
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .horizontalScroll(scrollState)
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        // All categories chip
+        ElevatedFilterChip(
+            selected = selectedCategoryId == null,
+            onClick = { onCategorySelected(null) },
+            label = { Text("All") }
+        )
+        
+        // Individual category chips
+        categories.forEach { category ->
+            ElevatedFilterChip(
+                selected = selectedCategoryId == category.id,
+                onClick = { onCategorySelected(category.id) },
+                label = { Text(category.name) }
             )
         }
     }

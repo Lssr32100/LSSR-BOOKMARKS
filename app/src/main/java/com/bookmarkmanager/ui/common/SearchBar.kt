@@ -6,14 +6,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Sort
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,48 +18,44 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bookmarkmanager.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    onSortClick: () -> Unit
+    query: String,
+    onQueryChange: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier,
-        placeholder = { Text(stringResource(R.string.search)) },
-        leadingIcon = { 
-            Icon(
-                imageVector = Icons.Default.Search, 
-                contentDescription = null
-            ) 
+    OutlinedTextField(
+        value = query,
+        onValueChange = onQueryChange,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        placeholder = {
+            Text(stringResource(R.string.search_placeholder))
         },
-        trailingIcon = { 
-            if (value.isNotEmpty()) {
-                IconButton(onClick = { onValueChange("") }) {
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search"
+            )
+        },
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                IconButton(
+                    onClick = { onQueryChange("") }
+                ) {
                     Icon(
-                        imageVector = Icons.Default.Clear, 
-                        contentDescription = stringResource(R.string.clear)
-                    )
-                }
-            } else {
-                IconButton(onClick = onSortClick) {
-                    Icon(
-                        imageVector = Icons.Default.Sort, 
-                        contentDescription = stringResource(R.string.sort_by)
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = "Clear"
                     )
                 }
             }
         },
         singleLine = true,
         shape = RoundedCornerShape(24.dp),
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.surfaceVariant
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline
         )
     )
 }
