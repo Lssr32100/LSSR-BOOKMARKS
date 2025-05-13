@@ -20,6 +20,10 @@ args = "Android Build"
 task = "workflow.run"
 args = "android-app"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Python Android Emulator"
+
 [[workflows.workflow]]
 name = "Android Build"
 author = "agent"
@@ -36,6 +40,14 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "./gradlew installDebug && adb shell am start -n com.bookmarkmanager/.MainActivity"
+
+[[workflows.workflow]]
+name = "Python Android Emulator"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python android_emulator.py"
 
 [deployment]
 run = ["sh", "-c", "./gradlew build"]
