@@ -1,7 +1,6 @@
 package com.bookmarkmanager.di
 
 import android.content.Context
-import androidx.room.Room
 import com.bookmarkmanager.data.local.BookmarkDatabase
 import com.bookmarkmanager.data.local.dao.BookmarkDao
 import com.bookmarkmanager.data.local.dao.CategoryDao
@@ -9,13 +8,13 @@ import com.bookmarkmanager.data.local.dao.SubcategoryDao
 import com.bookmarkmanager.data.repository.BookmarkRepository
 import com.bookmarkmanager.data.repository.CategoryRepository
 import com.bookmarkmanager.data.repository.SubcategoryRepository
-import com.bookmarkmanager.util.DataStoreManager
-import com.bookmarkmanager.util.ImportExportManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 @Module
@@ -24,20 +23,15 @@ object AppModule {
     
     @Provides
     @Singleton
-    fun provideBookmarkDatabase(
-        @ApplicationContext context: Context
-    ): BookmarkDatabase {
-        return Room.databaseBuilder(
-            context,
-            BookmarkDatabase::class.java,
-            "bookmark_database"
-        ).build()
-    }
+    fun provideApplicationScope() = CoroutineScope(SupervisorJob())
     
     @Provides
     @Singleton
-    fun provideBookmarkDao(database: BookmarkDatabase): BookmarkDao {
-        return database.bookmarkDao()
+    fun provideBookmarkDatabase(
+        @ApplicationContext context: Context,
+        scope: CoroutineScope
+    ): BookmarkDatabase {
+        return BookmarkDatabase.getDatabase(context, scope)
     }
     
     @Provides
@@ -54,8 +48,8 @@ object AppModule {
     
     @Provides
     @Singleton
-    fun provideBookmarkRepository(bookmarkDao: BookmarkDao): BookmarkRepository {
-        return BookmarkRepository(bookmarkDao)
+    fun provideBookmarkDao(database: BookmarkDatabase): BookmarkDao {
+        return database.bookmarkDao()
     }
     
     @Provides
@@ -72,25 +66,7 @@ object AppModule {
     
     @Provides
     @Singleton
-    fun provideDataStoreManager(
-        @ApplicationContext context: Context
-    ): DataStoreManager {
-        return DataStoreManager(context)
-    }
-    
-    @Provides
-    @Singleton
-    fun provideImportExportManager(
-        @ApplicationContext context: Context,
-        bookmarkRepository: BookmarkRepository,
-        categoryRepository: CategoryRepository,
-        subcategoryRepository: SubcategoryRepository
-    ): ImportExportManager {
-        return ImportExportManager(
-            context,
-            bookmarkRepository,
-            categoryRepository,
-            subcategoryRepository
-        )
+    fun provideBookmarkRepository(bookmarkDao: BookmarkDao): BookmarkRepository {
+        return BookmarkRepository(bookmarkDao)
     }
 }
