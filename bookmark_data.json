@@ -54,8 +54,8 @@
       "category_id": 1,
       "subcategory_id": 1,
       "type": "FREE",
-      "created_at": 1747137221.441539,
-      "updated_at": 1747137221.441539
+      "created_at": 1747139409.586646,
+      "updated_at": 1747139409.586646
     },
     {
       "id": 2,
@@ -65,8 +65,8 @@
       "category_id": 1,
       "subcategory_id": 2,
       "type": "FREE",
-      "created_at": 1747137221.441794,
-      "updated_at": 1747137221.441794
+      "created_at": 1747139409.586653,
+      "updated_at": 1747139409.586653
     },
     {
       "id": 3,
@@ -76,8 +76,8 @@
       "category_id": 2,
       "subcategory_id": 3,
       "type": "PAID",
-      "created_at": 1747137221.442101,
-      "updated_at": 1747137221.442101
+      "created_at": 1747139409.586655,
+      "updated_at": 1747139409.586655
     },
     {
       "id": 4,
@@ -87,8 +87,8 @@
       "category_id": 2,
       "subcategory_id": 4,
       "type": "FREEMIUM",
-      "created_at": 1747137221.442673,
-      "updated_at": 1747137221.442673
+      "created_at": 1747139409.586657,
+      "updated_at": 1747139409.586657
     },
     {
       "id": 5,
@@ -98,8 +98,8 @@
       "category_id": 3,
       "subcategory_id": 5,
       "type": "FREE",
-      "created_at": 1747137221.442988,
-      "updated_at": 1747137221.442988
+      "created_at": 1747139409.586659,
+      "updated_at": 1747139409.586659
     },
     {
       "id": 6,
@@ -109,8 +109,8 @@
       "category_id": 3,
       "subcategory_id": 6,
       "type": "PAID",
-      "created_at": 1747137221.443331,
-      "updated_at": 1747137221.443331
+      "created_at": 1747139409.586661,
+      "updated_at": 1747139409.586661
     }
   ]
 }

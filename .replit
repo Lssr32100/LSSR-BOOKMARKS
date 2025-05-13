@@ -2,7 +2,7 @@ modules = ["kotlin", "python-3.11"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["python311Packages.tkinter"]
+packages = ["python311Packages.tkinter", "jdk17", "gradle"]
 
 [workflows]
 runButton = "Project"
