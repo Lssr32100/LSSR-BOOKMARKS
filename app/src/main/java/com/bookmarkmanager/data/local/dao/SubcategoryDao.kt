@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SubcategoryDao {
-    
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSubcategory(subcategory: Subcategory): Long
     
@@ -23,23 +22,27 @@ interface SubcategoryDao {
     @Delete
     suspend fun deleteSubcategory(subcategory: Subcategory)
     
-    @Query("SELECT * FROM subcategories WHERE id = :id")
-    suspend fun getSubcategoryById(id: Long): Subcategory?
-    
-    @Query("SELECT * FROM subcategories WHERE categoryId = :categoryId ORDER BY name ASC")
-    fun getSubcategoriesByCategoryId(categoryId: Long): Flow<List<Subcategory>>
+    @Query("DELETE FROM subcategories WHERE id = :subcategoryId")
+    suspend fun deleteSubcategoryById(subcategoryId: Int)
     
     @Query("SELECT * FROM subcategories ORDER BY name ASC")
     fun getAllSubcategories(): Flow<List<Subcategory>>
     
+    @Query("SELECT * FROM subcategories WHERE category_id = :categoryId ORDER BY name ASC")
+    fun getSubcategoriesByCategory(categoryId: Int): Flow<List<Subcategory>>
+    
+    @Query("SELECT * FROM subcategories WHERE id = :subcategoryId")
+    suspend fun getSubcategoryById(subcategoryId: Int): Subcategory?
+    
+    @Transaction
+    @Query("SELECT * FROM subcategories")
+    fun getSubcategoriesWithBookmarks(): Flow<List<SubcategoryWithBookmarks>>
+    
     @Transaction
     @Query("SELECT * FROM subcategories WHERE id = :subcategoryId")
-    fun getSubcategoryWithBookmarks(subcategoryId: Long): Flow<SubcategoryWithBookmarks>
-    
-    @Query("SELECT * FROM subcategories")
-    suspend fun getAllSubcategoriesOnce(): List<Subcategory>
+    fun getSubcategoryWithBookmarks(subcategoryId: Int): Flow<SubcategoryWithBookmarks>
     
     @Transaction
-    @Query("DELETE FROM subcategories")
-    suspend fun deleteAllSubcategories()
+    @Query("SELECT * FROM subcategories WHERE category_id = :categoryId")
+    fun getSubcategoriesWithBookmarksByCategory(categoryId: Int): Flow<List<SubcategoryWithBookmarks>>
 }

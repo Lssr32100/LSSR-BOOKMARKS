@@ -8,50 +8,15 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class BookmarkRepository @Inject constructor(
-    private val bookmarkDao: BookmarkDao
-) {
-    suspend fun insertBookmark(bookmark: Bookmark): Long {
-        return bookmarkDao.insertBookmark(bookmark)
-    }
+class BookmarkRepository @Inject constructor(private val bookmarkDao: BookmarkDao) {
     
-    suspend fun updateBookmark(bookmark: Bookmark) {
-        bookmarkDao.updateBookmark(bookmark)
-    }
+    val allBookmarks: Flow<List<Bookmark>> = bookmarkDao.getAllBookmarks()
     
-    suspend fun deleteBookmark(bookmark: Bookmark) {
-        bookmarkDao.deleteBookmark(bookmark)
-    }
-    
-    suspend fun getBookmarkById(id: Long): Bookmark? {
-        return bookmarkDao.getBookmarkById(id)
-    }
-    
-    fun getAllBookmarksOrderByNameAsc(): Flow<List<Bookmark>> {
-        return bookmarkDao.getAllBookmarksOrderByNameAsc()
-    }
-    
-    fun getAllBookmarksOrderByNameDesc(): Flow<List<Bookmark>> {
-        return bookmarkDao.getAllBookmarksOrderByNameDesc()
-    }
-    
-    fun getAllBookmarksOrderByCategory(): Flow<List<Bookmark>> {
-        return bookmarkDao.getAllBookmarksOrderByCategory()
-    }
-    
-    fun getAllBookmarksOrderBySubcategory(): Flow<List<Bookmark>> {
-        return bookmarkDao.getAllBookmarksOrderBySubcategory()
-    }
-    
-    fun getAllBookmarksOrderByType(): Flow<List<Bookmark>> {
-        return bookmarkDao.getAllBookmarksOrderByType()
-    }
-    
-    fun getBookmarksByCategory(categoryId: Long): Flow<List<Bookmark>> {
+    fun getBookmarksByCategory(categoryId: Int): Flow<List<Bookmark>> {
         return bookmarkDao.getBookmarksByCategory(categoryId)
     }
     
-    fun getBookmarksBySubcategory(subcategoryId: Long): Flow<List<Bookmark>> {
+    fun getBookmarksBySubcategory(subcategoryId: Int): Flow<List<Bookmark>> {
         return bookmarkDao.getBookmarksBySubcategory(subcategoryId)
     }
     
@@ -63,11 +28,27 @@ class BookmarkRepository @Inject constructor(
         return bookmarkDao.searchBookmarks(query)
     }
     
-    suspend fun getAllBookmarksOnce(): List<Bookmark> {
-        return bookmarkDao.getAllBookmarksOnce()
+    fun searchBookmarksWithCategoryAndSubcategory(query: String): Flow<List<Bookmark>> {
+        return bookmarkDao.searchBookmarksWithCategoryAndSubcategory(query)
     }
     
-    suspend fun deleteAllBookmarks() {
-        bookmarkDao.deleteAllBookmarks()
+    suspend fun insert(bookmark: Bookmark): Long {
+        return bookmarkDao.insertBookmark(bookmark)
+    }
+    
+    suspend fun update(bookmark: Bookmark) {
+        bookmarkDao.updateBookmark(bookmark)
+    }
+    
+    suspend fun delete(bookmark: Bookmark) {
+        bookmarkDao.deleteBookmark(bookmark)
+    }
+    
+    suspend fun deleteById(bookmarkId: Int) {
+        bookmarkDao.deleteBookmarkById(bookmarkId)
+    }
+    
+    suspend fun getBookmarkById(bookmarkId: Int): Bookmark? {
+        return bookmarkDao.getBookmarkById(bookmarkId)
     }
 }

@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoryDao {
-    
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategory(category: Category): Long
     
@@ -23,24 +22,20 @@ interface CategoryDao {
     @Delete
     suspend fun deleteCategory(category: Category)
     
-    @Query("SELECT * FROM categories WHERE id = :id")
-    suspend fun getCategoryById(id: Long): Category?
+    @Query("DELETE FROM categories WHERE id = :categoryId")
+    suspend fun deleteCategoryById(categoryId: Int)
     
     @Query("SELECT * FROM categories ORDER BY name ASC")
     fun getAllCategories(): Flow<List<Category>>
     
+    @Query("SELECT * FROM categories WHERE id = :categoryId")
+    suspend fun getCategoryById(categoryId: Int): Category?
+    
+    @Transaction
+    @Query("SELECT * FROM categories")
+    fun getCategoriesWithSubcategories(): Flow<List<CategoryWithSubcategories>>
+    
     @Transaction
     @Query("SELECT * FROM categories WHERE id = :categoryId")
-    fun getCategoryWithSubcategories(categoryId: Long): Flow<CategoryWithSubcategories>
-    
-    @Transaction
-    @Query("SELECT * FROM categories")
-    fun getAllCategoriesWithSubcategories(): Flow<List<CategoryWithSubcategories>>
-    
-    @Query("SELECT * FROM categories")
-    suspend fun getAllCategoriesOnce(): List<Category>
-    
-    @Transaction
-    @Query("DELETE FROM categories")
-    suspend fun deleteAllCategories()
+    fun getCategoryWithSubcategories(categoryId: Int): Flow<CategoryWithSubcategories>
 }

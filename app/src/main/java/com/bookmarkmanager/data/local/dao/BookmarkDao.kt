@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import androidx.room.Update
 import com.bookmarkmanager.data.model.Bookmark
 import com.bookmarkmanager.data.model.BookmarkType
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BookmarkDao {
-    
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBookmark(bookmark: Bookmark): Long
     
@@ -23,42 +21,35 @@ interface BookmarkDao {
     @Delete
     suspend fun deleteBookmark(bookmark: Bookmark)
     
-    @Query("SELECT * FROM bookmarks WHERE id = :id")
-    suspend fun getBookmarkById(id: Long): Bookmark?
+    @Query("DELETE FROM bookmarks WHERE id = :bookmarkId")
+    suspend fun deleteBookmarkById(bookmarkId: Int)
     
     @Query("SELECT * FROM bookmarks ORDER BY name ASC")
-    fun getAllBookmarksOrderByNameAsc(): Flow<List<Bookmark>>
+    fun getAllBookmarks(): Flow<List<Bookmark>>
     
-    @Query("SELECT * FROM bookmarks ORDER BY name DESC")
-    fun getAllBookmarksOrderByNameDesc(): Flow<List<Bookmark>>
+    @Query("SELECT * FROM bookmarks WHERE id = :bookmarkId")
+    suspend fun getBookmarkById(bookmarkId: Int): Bookmark?
     
-    @Query("SELECT * FROM bookmarks ORDER BY categoryId, subcategoryId")
-    fun getAllBookmarksOrderByCategory(): Flow<List<Bookmark>>
+    @Query("SELECT * FROM bookmarks WHERE category_id = :categoryId")
+    fun getBookmarksByCategory(categoryId: Int): Flow<List<Bookmark>>
     
-    @Query("SELECT * FROM bookmarks ORDER BY subcategoryId")
-    fun getAllBookmarksOrderBySubcategory(): Flow<List<Bookmark>>
-    
-    @Query("SELECT * FROM bookmarks ORDER BY type")
-    fun getAllBookmarksOrderByType(): Flow<List<Bookmark>>
-    
-    @Query("SELECT * FROM bookmarks WHERE categoryId = :categoryId")
-    fun getBookmarksByCategory(categoryId: Long): Flow<List<Bookmark>>
-    
-    @Query("SELECT * FROM bookmarks WHERE subcategoryId = :subcategoryId")
-    fun getBookmarksBySubcategory(subcategoryId: Long): Flow<List<Bookmark>>
+    @Query("SELECT * FROM bookmarks WHERE subcategory_id = :subcategoryId")
+    fun getBookmarksBySubcategory(subcategoryId: Int): Flow<List<Bookmark>>
     
     @Query("SELECT * FROM bookmarks WHERE type = :type")
     fun getBookmarksByType(type: BookmarkType): Flow<List<Bookmark>>
     
-    @Query("SELECT * FROM bookmarks WHERE name LIKE '%' || :query || '%' OR " +
-           "id IN (SELECT b.id FROM bookmarks b JOIN categories c ON b.categoryId = c.id WHERE c.name LIKE '%' || :query || '%') OR " +
-           "id IN (SELECT b.id FROM bookmarks b JOIN subcategories s ON b.subcategoryId = s.id WHERE s.name LIKE '%' || :query || '%')")
+    @Query("SELECT * FROM bookmarks WHERE name LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%'")
     fun searchBookmarks(query: String): Flow<List<Bookmark>>
     
-    @Query("SELECT * FROM bookmarks")
-    suspend fun getAllBookmarksOnce(): List<Bookmark>
-    
-    @Transaction
-    @Query("DELETE FROM bookmarks")
-    suspend fun deleteAllBookmarks()
+    @Query("""
+        SELECT b.* FROM bookmarks b
+        JOIN categories c ON b.category_id = c.id
+        JOIN subcategories s ON b.subcategory_id = s.id
+        WHERE b.name LIKE '%' || :query || '%' 
+        OR b.description LIKE '%' || :query || '%'
+        OR c.name LIKE '%' || :query || '%'
+        OR s.name LIKE '%' || :query || '%'
+    """)
+    fun searchBookmarksWithCategoryAndSubcategory(query: String): Flow<List<Bookmark>>
 }

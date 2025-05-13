@@ -8,42 +8,41 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SubcategoryRepository @Inject constructor(
-    private val subcategoryDao: SubcategoryDao
-) {
-    suspend fun insertSubcategory(subcategory: Subcategory): Long {
+class SubcategoryRepository @Inject constructor(private val subcategoryDao: SubcategoryDao) {
+    
+    val allSubcategories: Flow<List<Subcategory>> = subcategoryDao.getAllSubcategories()
+    
+    val allSubcategoriesWithBookmarks: Flow<List<SubcategoryWithBookmarks>> = subcategoryDao.getSubcategoriesWithBookmarks()
+    
+    fun getSubcategoriesByCategory(categoryId: Int): Flow<List<Subcategory>> {
+        return subcategoryDao.getSubcategoriesByCategory(categoryId)
+    }
+    
+    fun getSubcategoriesWithBookmarksByCategory(categoryId: Int): Flow<List<SubcategoryWithBookmarks>> {
+        return subcategoryDao.getSubcategoriesWithBookmarksByCategory(categoryId)
+    }
+    
+    suspend fun insert(subcategory: Subcategory): Long {
         return subcategoryDao.insertSubcategory(subcategory)
     }
     
-    suspend fun updateSubcategory(subcategory: Subcategory) {
+    suspend fun update(subcategory: Subcategory) {
         subcategoryDao.updateSubcategory(subcategory)
     }
     
-    suspend fun deleteSubcategory(subcategory: Subcategory) {
+    suspend fun delete(subcategory: Subcategory) {
         subcategoryDao.deleteSubcategory(subcategory)
     }
     
-    suspend fun getSubcategoryById(id: Long): Subcategory? {
-        return subcategoryDao.getSubcategoryById(id)
+    suspend fun deleteById(subcategoryId: Int) {
+        subcategoryDao.deleteSubcategoryById(subcategoryId)
     }
     
-    fun getSubcategoriesByCategoryId(categoryId: Long): Flow<List<Subcategory>> {
-        return subcategoryDao.getSubcategoriesByCategoryId(categoryId)
+    suspend fun getSubcategoryById(subcategoryId: Int): Subcategory? {
+        return subcategoryDao.getSubcategoryById(subcategoryId)
     }
     
-    fun getAllSubcategories(): Flow<List<Subcategory>> {
-        return subcategoryDao.getAllSubcategories()
-    }
-    
-    fun getSubcategoryWithBookmarks(subcategoryId: Long): Flow<SubcategoryWithBookmarks> {
+    fun getSubcategoryWithBookmarks(subcategoryId: Int): Flow<SubcategoryWithBookmarks> {
         return subcategoryDao.getSubcategoryWithBookmarks(subcategoryId)
-    }
-    
-    suspend fun getAllSubcategoriesOnce(): List<Subcategory> {
-        return subcategoryDao.getAllSubcategoriesOnce()
-    }
-    
-    suspend fun deleteAllSubcategories() {
-        subcategoryDao.deleteAllSubcategories()
     }
 }
