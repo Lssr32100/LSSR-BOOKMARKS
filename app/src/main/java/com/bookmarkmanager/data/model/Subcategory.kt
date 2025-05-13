@@ -11,15 +11,15 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = Category::class,
             parentColumns = ["id"],
-            childColumns = ["categoryId"],
+            childColumns = ["category_id"],
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index("categoryId")]
+    indices = [Index("category_id")]
 )
 data class Subcategory(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: Int = 0,
     val name: String,
-    val categoryId: Long
+    val category_id: Int
 )

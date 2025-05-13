@@ -4,34 +4,38 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(
     tableName = "bookmarks",
     foreignKeys = [
         ForeignKey(
-            entity = Subcategory::class,
+            entity = Category::class,
             parentColumns = ["id"],
-            childColumns = ["subcategoryId"],
+            childColumns = ["category_id"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = Category::class,
+            entity = Subcategory::class,
             parentColumns = ["id"],
-            childColumns = ["categoryId"],
+            childColumns = ["subcategory_id"],
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index("subcategoryId"), Index("categoryId")]
+    indices = [
+        Index("category_id"),
+        Index("subcategory_id")
+    ]
 )
 data class Bookmark(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: Int = 0,
     val name: String,
     val url: String? = null,
     val description: String? = null,
-    val categoryId: Long,
-    val subcategoryId: Long,
+    val category_id: Int,
+    val subcategory_id: Int,
     val type: BookmarkType,
-    val createdAt: Long = System.currentTimeMillis(),
-    val updatedAt: Long = System.currentTimeMillis()
+    val created_at: Date = Date(),
+    val updated_at: Date = Date()
 )

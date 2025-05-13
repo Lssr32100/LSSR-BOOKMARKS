@@ -9,7 +9,7 @@ data class SubcategoryWithBookmarks(
     @Embedded val subcategory: Subcategory,
     @Relation(
         parentColumn = "id",
-        entityColumn = "subcategoryId"
+        entityColumn = "subcategory_id"
     )
     val bookmarks: List<Bookmark>
 )

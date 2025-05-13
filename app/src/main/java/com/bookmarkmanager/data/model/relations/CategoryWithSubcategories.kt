@@ -9,7 +9,7 @@ data class CategoryWithSubcategories(
     @Embedded val category: Category,
     @Relation(
         parentColumn = "id",
-        entityColumn = "categoryId"
+        entityColumn = "category_id"
     )
     val subcategories: List<Subcategory>
 )
