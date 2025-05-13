@@ -96,14 +96,22 @@ class CategoriesViewModel @Inject constructor(
         categoryName = ""
         categoryNameError = null
         editingCategoryId = 0
+        // Generate a suggested color based on the number of existing categories
+        val nextColorIndex = _uiState.value.categoriesWithSubcategories.size
+        selectedCategoryColor = Category.getSuggestedColor(nextColorIndex)
         _uiState.value = _uiState.value.copy(isAddingCategory = true)
     }
     
     fun showEditCategoryDialog(category: Category) {
         categoryName = category.name
         categoryNameError = null
+        selectedCategoryColor = category.color
         editingCategoryId = category.id
         _uiState.value = _uiState.value.copy(isEditingCategory = true)
+    }
+    
+    fun updateSelectedCategoryColor(color: Long) {
+        selectedCategoryColor = color
     }
     
     fun hideAddEditCategoryDialog() {
