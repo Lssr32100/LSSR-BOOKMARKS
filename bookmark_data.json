@@ -1,0 +1,116 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Websites"
+    },
+    {
+      "id": 2,
+      "name": "Apps"
+    },
+    {
+      "id": 3,
+      "name": "Tools"
+    }
+  ],
+  "subcategories": [
+    {
+      "id": 1,
+      "name": "Social Media",
+      "category_id": 1
+    },
+    {
+      "id": 2,
+      "name": "News",
+      "category_id": 1
+    },
+    {
+      "id": 3,
+      "name": "Productivity",
+      "category_id": 2
+    },
+    {
+      "id": 4,
+      "name": "Entertainment",
+      "category_id": 2
+    },
+    {
+      "id": 5,
+      "name": "Development",
+      "category_id": 3
+    },
+    {
+      "id": 6,
+      "name": "Design",
+      "category_id": 3
+    }
+  ],
+  "bookmarks": [
+    {
+      "id": 1,
+      "name": "Twitter",
+      "url": "https://twitter.com",
+      "description": "Social media platform",
+      "category_id": 1,
+      "subcategory_id": 1,
+      "type": "FREE",
+      "created_at": 1747137221.441539,
+      "updated_at": 1747137221.441539
+    },
+    {
+      "id": 2,
+      "name": "CNN",
+      "url": "https://cnn.com",
+      "description": "News website",
+      "category_id": 1,
+      "subcategory_id": 2,
+      "type": "FREE",
+      "created_at": 1747137221.441794,
+      "updated_at": 1747137221.441794
+    },
+    {
+      "id": 3,
+      "name": "Microsoft Office",
+      "url": "https://office.com",
+      "description": "Office suite",
+      "category_id": 2,
+      "subcategory_id": 3,
+      "type": "PAID",
+      "created_at": 1747137221.442101,
+      "updated_at": 1747137221.442101
+    },
+    {
+      "id": 4,
+      "name": "Spotify",
+      "url": "https://spotify.com",
+      "description": "Music streaming",
+      "category_id": 2,
+      "subcategory_id": 4,
+      "type": "FREEMIUM",
+      "created_at": 1747137221.442673,
+      "updated_at": 1747137221.442673
+    },
+    {
+      "id": 5,
+      "name": "Visual Studio Code",
+      "url": "https://code.visualstudio.com",
+      "description": "Code editor",
+      "category_id": 3,
+      "subcategory_id": 5,
+      "type": "FREE",
+      "created_at": 1747137221.442988,
+      "updated_at": 1747137221.442988
+    },
+    {
+      "id": 6,
+      "name": "Adobe Photoshop",
+      "url": "https://adobe.com/photoshop",
+      "description": "Image editing software",
+      "category_id": 3,
+      "subcategory_id": 6,
+      "type": "PAID",
+      "created_at": 1747137221.443331,
+      "updated_at": 1747137221.443331
+    }
+  ]
+}
