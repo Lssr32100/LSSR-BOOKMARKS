@@ -22,7 +22,7 @@ args = "android-app"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Bookmark Manager CLI"
+args = "Bookmark Manager Web App"
 
 [[workflows.workflow]]
 name = "Android Build"
@@ -42,12 +42,17 @@ task = "shell.exec"
 args = "./gradlew installDebug && adb shell am start -n com.bookmarkmanager/.MainActivity"
 
 [[workflows.workflow]]
-name = "Bookmark Manager CLI"
+name = "Bookmark Manager Web App"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python bookmark_cli.py"
+args = "python app.py"
+waitForPort = 5000
 
 [deployment]
 run = ["sh", "-c", "./gradlew build"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80

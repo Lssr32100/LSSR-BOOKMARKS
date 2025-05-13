@@ -1,0 +1,130 @@
+/* Main Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Bookmark Card */
+.bookmark-card {
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.bookmark-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.bookmark-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+}
+
+.bookmark-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.bookmark-card .bookmark-category {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.bookmark-card .bookmark-url {
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.bookmark-card .bookmark-description {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.bookmark-type-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.bookmark-actions {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+/* Type badges */
+.badge-free {
+    background-color: #28a745;
+}
+
+.badge-paid {
+    background-color: #dc3545;
+}
+
+.badge-freemium {
+    background-color: #fd7e14;
+}
+
+/* Categories and Subcategories List */
+.category-item, .subcategory-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-group-item .item-name {
+    flex-grow: 1;
+}
+
+.list-group-item .item-actions {
+    visibility: hidden;
+}
+
+.list-group-item:hover .item-actions {
+    visibility: visible;
+}
+
+.category-select-item {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+.category-select-item:hover {
+    background-color: #f8f9fa;
+}
+
+.category-select-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Sort buttons */
+.sort-buttons .btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sort-buttons {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    
+    .sort-buttons .btn {
+        flex-shrink: 0;
+    }
+}
