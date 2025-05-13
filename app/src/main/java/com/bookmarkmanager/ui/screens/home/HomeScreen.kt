@@ -1,158 +1,192 @@
 package com.bookmarkmanager.ui.screens.home
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.bookmarkmanager.R
-import com.bookmarkmanager.data.model.Bookmark
-import com.bookmarkmanager.ui.common.BookmarkCard
-import com.bookmarkmanager.ui.common.FilterChips
-import com.bookmarkmanager.ui.common.SearchBar
-import com.bookmarkmanager.ui.common.SortingOptions
+import com.bookmarkmanager.data.model.BookmarkType
+import com.bookmarkmanager.ui.common.*
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onAddBookmark: () -> Unit,
-    onEditBookmark: (Long) -> Unit,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel,
+    onNavigateToAddBookmark: () -> Unit,
+    onNavigateToEditBookmark: (Int) -> Unit,
+    onNavigateToCategories: () -> Unit,
+    onNavigateToSettings: () -> Unit
 ) {
-    val bookmarksState by viewModel.bookmarksState.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val sortOption by viewModel.sortOption.collectAsState()
-    val filterOption by viewModel.filterOption.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
     
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    
-    var showSortingOptions by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var bookmarkToDelete by remember { mutableStateOf<BookmarkWithDetails?>(null) }
     
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                onClick = onAddBookmark,
-                icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                text = { Text(stringResource(R.string.add_bookmark)) },
-                expanded = scrollBehavior.state.collapsedFraction < 0.5f
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.title_my_bookmarks)) },
+                actions = {
+                    IconButton(onClick = onNavigateToCategories) {
+                        Icon(
+                            imageVector = Icons.Default.Category,
+                            contentDescription = stringResource(R.string.nav_categories)
+                        )
+                    }
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = stringResource(R.string.nav_settings)
+                        )
+                    }
+                }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onNavigateToAddBookmark,
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.btn_add_bookmark)
+                )
+            }
         }
-    ) { innerPadding ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(paddingValues)
         ) {
-            // Search and sort/filter
+            // Search bar
             SearchBar(
-                value = searchQuery,
-                onValueChange = viewModel::updateSearchQuery,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                onSortClick = { showSortingOptions = !showSortingOptions }
+                query = viewModel.searchQuery,
+                onQueryChange = { viewModel.updateSearchQuery(it) }
             )
             
-            AnimatedVisibility(
-                visible = showSortingOptions,
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                SortingOptions(
-                    selectedSortOption = sortOption,
-                    onSortOptionSelected = {
-                        viewModel.updateSortOption(it)
-                        showSortingOptions = false
-                    }
+            // Type filters
+            TypeFilterChips(
+                selectedType = viewModel.selectedBookmarkType,
+                onTypeSelected = { viewModel.updateSelectedBookmarkType(it) }
+            )
+            
+            // Category filters (scrollable row)
+            if (uiState.categories.isNotEmpty()) {
+                CategoryFilterChips(
+                    categories = uiState.categories,
+                    selectedCategoryId = viewModel.selectedCategoryId,
+                    onCategorySelected = { viewModel.updateSelectedCategory(it) }
                 )
             }
             
-            // Filter chips
-            FilterChips(
-                categories = bookmarksState.categories,
-                selectedFilter = filterOption,
-                onFilterSelected = viewModel::updateFilterOption
+            // Sorting options
+            SortingOptions(
+                selectedOption = viewModel.sortOption,
+                onOptionSelected = { viewModel.updateSortOption(it) }
             )
             
-            // Bookmarks list
-            if (bookmarksState.isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            } else if (bookmarksState.bookmarks.isEmpty()) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.no_bookmarks),
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+            // Bookmark list
+            Box(modifier = Modifier.weight(1f)) {
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
                     )
-                }
-            } else {
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(
-                        items = bookmarksState.bookmarks,
-                        key = { it.id }
-                    ) { bookmark ->
-                        BookmarkCard(
-                            bookmark = bookmark,
-                            categoryName = viewModel.getCategoryName(bookmark.categoryId),
-                            subcategoryName = viewModel.getSubcategoryName(bookmark.subcategoryId),
-                            onEditClick = { onEditBookmark(bookmark.id) },
-                            onDeleteClick = { viewModel.deleteBookmark(bookmark) }
+                } else if (uiState.bookmarks.isEmpty()) {
+                    // Empty state
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.no_bookmarks_found),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Button(onClick = onNavigateToAddBookmark) {
+                            Text(stringResource(R.string.btn_add_bookmark))
+                        }
                     }
-                    
-                    // Add bottom space for FAB
-                    item {
-                        Spacer(modifier = Modifier.height(80.dp))
+                } else {
+                    // Bookmark list
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(vertical = 8.dp)
+                    ) {
+                        items(uiState.bookmarks) { bookmarkWithDetails ->
+                            val bookmark = bookmarkWithDetails.bookmark
+                            BookmarkCard(
+                                name = bookmark.name,
+                                url = bookmark.url,
+                                description = bookmark.description,
+                                categoryName = bookmarkWithDetails.categoryName,
+                                subcategoryName = bookmarkWithDetails.subcategoryName,
+                                bookmarkType = bookmark.bookmarkType,
+                                onEdit = { onNavigateToEditBookmark(bookmark.id) },
+                                onDelete = {
+                                    bookmarkToDelete = bookmarkWithDetails
+                                    showDeleteDialog = true
+                                }
+                            )
+                        }
                     }
                 }
             }
         }
+    }
+    
+    // Delete confirmation dialog
+    if (showDeleteDialog && bookmarkToDelete != null) {
+        AlertDialog(
+            onDismissRequest = {
+                showDeleteDialog = false
+                bookmarkToDelete = null
+            },
+            title = { Text(stringResource(R.string.dialog_confirm_delete)) },
+            text = { Text(stringResource(R.string.dialog_delete_bookmark_message)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        bookmarkToDelete?.let {
+                            scope.launch {
+                                viewModel.deleteBookmark(it.bookmark.id)
+                                showDeleteDialog = false
+                                bookmarkToDelete = null
+                            }
+                        }
+                    }
+                ) {
+                    Text(
+                        stringResource(R.string.btn_confirm),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteDialog = false
+                        bookmarkToDelete = null
+                    }
+                ) {
+                    Text(stringResource(R.string.btn_cancel))
+                }
+            }
+        )
     }
 }

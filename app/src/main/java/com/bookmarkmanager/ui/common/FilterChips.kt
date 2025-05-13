@@ -103,12 +103,12 @@ fun CategoryFilterChips(
             label = { Text("All") }
         )
         
-        // Individual category chips
+        // Individual category chips with color indicators
         categories.forEach { category ->
-            ElevatedFilterChip(
+            CategoryChip(
+                category = category,
                 selected = selectedCategoryId == category.id,
-                onClick = { onCategorySelected(category.id) },
-                label = { Text(category.name) }
+                onClick = { onCategorySelected(category.id) }
             )
         }
     }

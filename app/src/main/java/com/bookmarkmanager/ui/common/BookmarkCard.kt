@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bookmarkmanager.data.model.BookmarkType
+import com.bookmarkmanager.data.model.Category
 import com.bookmarkmanager.ui.theme.TypeFree
 import com.bookmarkmanager.ui.theme.TypeFreemium
 import com.bookmarkmanager.ui.theme.TypePaid
@@ -29,6 +30,7 @@ fun BookmarkCard(
     description: String?,
     categoryName: String,
     subcategoryName: String,
+    categoryColor: Long = Category.DEFAULT_COLOR,
     bookmarkType: BookmarkType,
     onEdit: () -> Unit,
     onDelete: () -> Unit
@@ -75,10 +77,20 @@ fun BookmarkCard(
             
             Spacer(modifier = Modifier.height(8.dp))
             
-            // Category and subcategory
+            // Category and subcategory with color
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                // Category color circle
+                Box(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .clip(CircleShape)
+                        .background(Color(categoryColor))
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                
+                // Folder icon
                 Icon(
                     imageVector = Icons.Default.Folder,
                     contentDescription = null,
@@ -86,6 +98,8 @@ fun BookmarkCard(
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
+                
+                // Category and subcategory names
                 Text(
                     text = "$categoryName > $subcategoryName",
                     style = MaterialTheme.typography.bodyMedium,

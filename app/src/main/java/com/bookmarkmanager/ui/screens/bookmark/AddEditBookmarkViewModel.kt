@@ -1,6 +1,8 @@
 package com.bookmarkmanager.ui.screens.bookmark
 
-import androidx.lifecycle.SavedStateHandle
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmarkmanager.data.model.Bookmark
@@ -14,248 +16,247 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+data class AddEditBookmarkUiState(
+    val categories: List<Category> = emptyList(),
+    val subcategories: List<Subcategory> = emptyList(),
+    val isLoading: Boolean = false,
+    val isSaving: Boolean = false,
+    val error: String? = null,
+    val isSaved: Boolean = false
+)
 
 @HiltViewModel
 class AddEditBookmarkViewModel @Inject constructor(
     private val bookmarkRepository: BookmarkRepository,
     private val categoryRepository: CategoryRepository,
-    private val subcategoryRepository: SubcategoryRepository,
-    savedStateHandle: SavedStateHandle
+    private val subcategoryRepository: SubcategoryRepository
 ) : ViewModel() {
-    
-    private val _state = MutableStateFlow(AddEditBookmarkState())
-    val state: StateFlow<AddEditBookmarkState> = _state.asStateFlow()
-    
-    // Form data
-    private val _name = MutableStateFlow("")
-    val name = _name.asStateFlow()
-    
-    private val _url = MutableStateFlow("")
-    val url = _url.asStateFlow()
-    
-    private val _description = MutableStateFlow("")
-    val description = _description.asStateFlow()
-    
-    private val _selectedCategoryId = MutableStateFlow<Long?>(null)
-    val selectedCategoryId = _selectedCategoryId.asStateFlow()
-    
-    private val _selectedSubcategoryId = MutableStateFlow<Long?>(null)
-    val selectedSubcategoryId = _selectedSubcategoryId.asStateFlow()
-    
-    private val _selectedType = MutableStateFlow(BookmarkType.FREE)
-    val selectedType = _selectedType.asStateFlow()
-    
-    // All categories and subcategories
-    private val _categories = MutableStateFlow<List<Category>>(emptyList())
-    val categories = _categories.asStateFlow()
-    
-    private val _subcategories = MutableStateFlow<List<Subcategory>>(emptyList())
-    val subcategories = _subcategories.asStateFlow()
-    
-    // Subcategories filtered by selected category
-    private val _filteredSubcategories = MutableStateFlow<List<Subcategory>>(emptyList())
-    val filteredSubcategories = _filteredSubcategories.asStateFlow()
-    
-    // Validation
-    private val _nameError = MutableStateFlow<String?>(null)
-    val nameError = _nameError.asStateFlow()
-    
-    private val _categoryError = MutableStateFlow<String?>(null)
-    val categoryError = _categoryError.asStateFlow()
-    
-    private val _subcategoryError = MutableStateFlow<String?>(null)
-    val subcategoryError = _subcategoryError.asStateFlow()
-    
-    // Get bookmarkId from SavedStateHandle
-    private val bookmarkId: Long? = savedStateHandle.get<Long>("bookmarkId")?.let {
-        if (it == -1L) null else it
-    }
-    
-    init {
-        loadCategories()
-        loadSubcategories()
-        
-        if (bookmarkId != null) {
-            loadBookmark(bookmarkId)
-        } else {
-            _state.update { it.copy(isLoading = false) }
+
+    private val _uiState = MutableStateFlow(AddEditBookmarkUiState(isLoading = true))
+    val uiState: StateFlow<AddEditBookmarkUiState> = _uiState.asStateFlow()
+
+    // Form fields
+    var bookmarkName by mutableStateOf("")
+        private set
+    var bookmarkUrl by mutableStateOf("")
+        private set
+    var bookmarkDescription by mutableStateOf("")
+        private set
+    var selectedCategoryId by mutableStateOf<Int?>(null)
+        private set
+    var selectedSubcategoryId by mutableStateOf<Int?>(null)
+        private set
+    var selectedBookmarkType by mutableStateOf(BookmarkType.FREE)
+        private set
+
+    // Validation errors
+    var nameError by mutableStateOf<String?>(null)
+        private set
+    var categoryError by mutableStateOf<String?>(null)
+        private set
+    var subcategoryError by mutableStateOf<String?>(null)
+        private set
+
+    // Tracks available subcategories for the selected category
+    private var availableSubcategories = listOf<Subcategory>()
+
+    fun loadBookmark(bookmarkId: Int) {
+        if (bookmarkId == 0) {
+            // This is a new bookmark, just load categories
+            loadCategories()
+            _uiState.value = _uiState.value.copy(isLoading = false)
+            return
         }
-    }
-    
-    private fun loadBookmark(id: Long) {
+
         viewModelScope.launch {
-            val bookmark = bookmarkRepository.getBookmarkById(id)
-            if (bookmark != null) {
-                _name.value = bookmark.name
-                _url.value = bookmark.url ?: ""
-                _description.value = bookmark.description ?: ""
-                _selectedCategoryId.value = bookmark.categoryId
-                _selectedSubcategoryId.value = bookmark.subcategoryId
-                _selectedType.value = bookmark.type
+            try {
+                val bookmark = bookmarkRepository.getBookmarkById(bookmarkId).first()
                 
-                // Update filtered subcategories based on selected category
-                updateFilteredSubcategories(bookmark.categoryId)
-                
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        isEditMode = true
-                    )
-                }
-            } else {
-                _state.update {
-                    it.copy(
+                bookmark?.let {
+                    // Populate form fields
+                    bookmarkName = it.name
+                    bookmarkUrl = it.url ?: ""
+                    bookmarkDescription = it.description ?: ""
+                    selectedCategoryId = it.categoryId
+                    selectedBookmarkType = it.bookmarkType
+                    
+                    // Load categories and subcategories
+                    loadCategories()
+                    
+                    // Load subcategories for the selected category
+                    if (it.categoryId != null) {
+                        loadSubcategoriesForCategory(it.categoryId)
+                        selectedSubcategoryId = it.subcategoryId
+                    }
+                    
+                    _uiState.value = _uiState.value.copy(isLoading = false)
+                } ?: run {
+                    _uiState.value = _uiState.value.copy(
                         isLoading = false,
                         error = "Bookmark not found"
                     )
                 }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.message ?: "Error loading bookmark"
+                )
             }
         }
     }
-    
+
     private fun loadCategories() {
         viewModelScope.launch {
-            categoryRepository.getAllCategories().collect { categories ->
-                _categories.value = categories
-            }
-        }
-    }
-    
-    private fun loadSubcategories() {
-        viewModelScope.launch {
-            subcategoryRepository.getAllSubcategories().collect { subcategories ->
-                _subcategories.value = subcategories
-                
-                // If a category is selected, update filtered subcategories
-                _selectedCategoryId.value?.let { updateFilteredSubcategories(it) }
-            }
-        }
-    }
-    
-    fun updateName(name: String) {
-        _name.value = name
-        validateName()
-    }
-    
-    fun updateUrl(url: String) {
-        _url.value = url
-    }
-    
-    fun updateDescription(description: String) {
-        _description.value = description
-    }
-    
-    fun updateSelectedCategory(categoryId: Long) {
-        _selectedCategoryId.value = categoryId
-        updateFilteredSubcategories(categoryId)
-        validateCategory()
-        
-        // Clear selected subcategory when category changes
-        _selectedSubcategoryId.value = null
-        _subcategoryError.value = null
-    }
-    
-    fun updateSelectedSubcategory(subcategoryId: Long) {
-        _selectedSubcategoryId.value = subcategoryId
-        validateSubcategory()
-    }
-    
-    fun updateSelectedType(type: BookmarkType) {
-        _selectedType.value = type
-    }
-    
-    private fun updateFilteredSubcategories(categoryId: Long) {
-        _filteredSubcategories.value = _subcategories.value.filter { it.categoryId == categoryId }
-    }
-    
-    fun saveBookmark() {
-        if (!validateForm()) return
-        
-        viewModelScope.launch {
-            val categoryId = _selectedCategoryId.value!!
-            val subcategoryId = _selectedSubcategoryId.value!!
-            
-            val bookmark = if (bookmarkId != null) {
-                Bookmark(
-                    id = bookmarkId,
-                    name = _name.value,
-                    url = _url.value.takeIf { it.isNotBlank() },
-                    description = _description.value.takeIf { it.isNotBlank() },
-                    categoryId = categoryId,
-                    subcategoryId = subcategoryId,
-                    type = _selectedType.value,
-                    updatedAt = System.currentTimeMillis()
-                )
-            } else {
-                Bookmark(
-                    name = _name.value,
-                    url = _url.value.takeIf { it.isNotBlank() },
-                    description = _description.value.takeIf { it.isNotBlank() },
-                    categoryId = categoryId,
-                    subcategoryId = subcategoryId,
-                    type = _selectedType.value
-                )
-            }
-            
             try {
-                if (bookmarkId != null) {
-                    bookmarkRepository.updateBookmark(bookmark)
-                } else {
-                    bookmarkRepository.insertBookmark(bookmark)
-                }
+                val categories = categoryRepository.getAllCategories().first()
+                _uiState.value = _uiState.value.copy(categories = categories)
                 
-                _state.update {
-                    it.copy(isSaved = true)
+                // If there's only one category, select it automatically
+                if (categories.size == 1 && selectedCategoryId == null) {
+                    updateSelectedCategory(categories[0].id)
                 }
             } catch (e: Exception) {
-                _state.update {
-                    it.copy(error = "Failed to save bookmark: ${e.message}")
-                }
+                _uiState.value = _uiState.value.copy(
+                    error = e.message ?: "Error loading categories"
+                )
             }
         }
     }
-    
-    private fun validateForm(): Boolean {
-        validateName()
-        validateCategory()
-        validateSubcategory()
-        
-        return _nameError.value == null &&
-                _categoryError.value == null &&
-                _subcategoryError.value == null
+
+    private fun loadSubcategoriesForCategory(categoryId: Int) {
+        viewModelScope.launch {
+            try {
+                availableSubcategories = subcategoryRepository.getSubcategoriesForCategory(categoryId).first()
+                _uiState.value = _uiState.value.copy(subcategories = availableSubcategories)
+                
+                // If there's only one subcategory, select it automatically
+                if (availableSubcategories.size == 1 && selectedSubcategoryId == null) {
+                    updateSelectedSubcategory(availableSubcategories[0].id)
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = e.message ?: "Error loading subcategories"
+                )
+            }
+        }
     }
-    
-    private fun validateName() {
-        _nameError.value = if (_name.value.isBlank()) {
+
+    fun updateBookmarkName(name: String) {
+        bookmarkName = name
+        validateName()
+    }
+
+    fun updateBookmarkUrl(url: String) {
+        bookmarkUrl = url
+    }
+
+    fun updateBookmarkDescription(description: String) {
+        bookmarkDescription = description
+    }
+
+    fun updateSelectedCategory(categoryId: Int?) {
+        if (categoryId == selectedCategoryId) return
+        
+        selectedCategoryId = categoryId
+        selectedSubcategoryId = null
+        validateCategory()
+        
+        // Load subcategories for the selected category
+        if (categoryId != null) {
+            loadSubcategoriesForCategory(categoryId)
+        } else {
+            _uiState.value = _uiState.value.copy(subcategories = emptyList())
+        }
+    }
+
+    fun updateSelectedSubcategory(subcategoryId: Int?) {
+        selectedSubcategoryId = subcategoryId
+        validateSubcategory()
+    }
+
+    fun updateSelectedBookmarkType(bookmarkType: BookmarkType) {
+        selectedBookmarkType = bookmarkType
+    }
+
+    private fun validateName(): Boolean {
+        nameError = if (bookmarkName.isBlank()) {
             "Name is required"
         } else {
             null
         }
+        return nameError == null
     }
-    
-    private fun validateCategory() {
-        _categoryError.value = if (_selectedCategoryId.value == null) {
+
+    private fun validateCategory(): Boolean {
+        categoryError = if (selectedCategoryId == null) {
             "Category is required"
         } else {
             null
         }
+        return categoryError == null
     }
-    
-    private fun validateSubcategory() {
-        _subcategoryError.value = if (_selectedSubcategoryId.value == null) {
+
+    private fun validateSubcategory(): Boolean {
+        subcategoryError = if (selectedCategoryId != null && selectedSubcategoryId == null) {
             "Subcategory is required"
         } else {
             null
         }
+        return subcategoryError == null
+    }
+
+    private fun validateForm(): Boolean {
+        val isNameValid = validateName()
+        val isCategoryValid = validateCategory()
+        val isSubcategoryValid = validateSubcategory()
+        
+        return isNameValid && isCategoryValid && isSubcategoryValid
+    }
+
+    fun saveBookmark(bookmarkId: Int) {
+        if (!validateForm()) {
+            return
+        }
+        
+        _uiState.value = _uiState.value.copy(isSaving = true)
+        
+        viewModelScope.launch {
+            try {
+                val bookmark = Bookmark(
+                    id = if (bookmarkId == 0) 0 else bookmarkId,
+                    name = bookmarkName,
+                    url = bookmarkUrl.ifBlank { null },
+                    description = bookmarkDescription.ifBlank { null },
+                    categoryId = selectedCategoryId ?: 0, // Should never be null due to validation
+                    subcategoryId = selectedSubcategoryId ?: 0, // Should never be null due to validation
+                    bookmarkType = selectedBookmarkType
+                )
+                
+                if (bookmarkId == 0) {
+                    bookmarkRepository.insertBookmark(bookmark)
+                } else {
+                    bookmarkRepository.updateBookmark(bookmark)
+                }
+                
+                _uiState.value = _uiState.value.copy(
+                    isSaving = false,
+                    isSaved = true
+                )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isSaving = false,
+                    error = e.message ?: "Error saving bookmark"
+                )
+            }
+        }
+    }
+
+    // Clear error messages
+    fun clearErrors() {
+        _uiState.value = _uiState.value.copy(error = null)
     }
 }
-
-data class AddEditBookmarkState(
-    val isLoading: Boolean = true,
-    val isEditMode: Boolean = false,
-    val isSaved: Boolean = false,
-    val error: String? = null
-)
