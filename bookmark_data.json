@@ -1,116 +1,716 @@
 {
   "categories": [
     {
-      "id": 1,
-      "name": "Websites"
+      "id": 5,
+      "name": "AI PRODUCTIVITY TOOLS"
     },
     {
-      "id": 2,
-      "name": "Apps"
+      "id": 6,
+      "name": "AI IMAGE GENERATION"
     },
     {
-      "id": 3,
-      "name": "Tools"
+      "id": 7,
+      "name": "AI WRITING GENERATION"
+    },
+    {
+      "id": 8,
+      "name": "AI SPREAD SHEET"
+    },
+    {
+      "id": 9,
+      "name": "AI SCHEDULING"
+    },
+    {
+      "id": 10,
+      "name": "AI KNOWLEDGE MANAGEMENT"
+    },
+    {
+      "id": 11,
+      "name": "AI MEETING NOTES"
+    },
+    {
+      "id": 12,
+      "name": "AI VIDEO GENERATION"
+    },
+    {
+      "id": 13,
+      "name": "AI EMAIL ASSISTANCE"
+    },
+    {
+      "id": 14,
+      "name": "GRAMMAR & REASONING"
+    },
+    {
+      "id": 15,
+      "name": "AI CODING ASSISTANCE"
+    },
+    {
+      "id": 16,
+      "name": "AI CHATBOTS"
     }
   ],
   "subcategories": [
     {
-      "id": 1,
-      "name": "Social Media",
-      "category_id": 1
+      "id": 7,
+      "name": "TASK AUTOMATION",
+      "category_id": 5
     },
     {
-      "id": 2,
-      "name": "News",
-      "category_id": 1
+      "id": 8,
+      "name": "PERSONAL ASSISTANT TOOLS",
+      "category_id": 5
     },
     {
-      "id": 3,
-      "name": "Productivity",
-      "category_id": 2
+      "id": 9,
+      "name": "ART AND ILLUSTRATION",
+      "category_id": 6
     },
     {
-      "id": 4,
-      "name": "Entertainment",
-      "category_id": 2
+      "id": 10,
+      "name": "PHOTO EDITING AND ENHANCEMENT",
+      "category_id": 6
     },
     {
-      "id": 5,
-      "name": "Development",
-      "category_id": 3
+      "id": 11,
+      "name": "DESIGN AND BRANDING",
+      "category_id": 6
     },
     {
-      "id": 6,
-      "name": "Design",
-      "category_id": 3
+      "id": 12,
+      "name": "CONTENT CREATION",
+      "category_id": 7
+    },
+    {
+      "id": 13,
+      "name": "STORY/SCRIPT WRITING",
+      "category_id": 7
+    },
+    {
+      "id": 14,
+      "name": "ACADEMIC & TECHNICAL WRITING",
+      "category_id": 7
+    },
+    {
+      "id": 15,
+      "name": "SMART FORMULAS & AUTOMATION",
+      "category_id": 8
+    },
+    {
+      "id": 16,
+      "name": "DATA ANALYSIS & CLEANUP",
+      "category_id": 8
+    },
+    {
+      "id": 17,
+      "name": "SPREADSHEET EXTENTIONS/PLUGINS",
+      "category_id": 8
+    },
+    {
+      "id": 18,
+      "name": "MEETING COORDINATION",
+      "category_id": 9
+    },
+    {
+      "id": 19,
+      "name": "CALENDER ASSISTANTS",
+      "category_id": 9
+    },
+    {
+      "id": 20,
+      "name": "REMINDER",
+      "category_id": 9
+    },
+    {
+      "id": 21,
+      "name": "WIKI & INTERNAL DOCS",
+      "category_id": 10
+    },
+    {
+      "id": 22,
+      "name": "SMART RESEARCH & DISCOVERY",
+      "category_id": 10
+    },
+    {
+      "id": 23,
+      "name": "CONTEXTUAL KNOWLEDGE ASSISTANTS",
+      "category_id": 10
+    },
+    {
+      "id": 24,
+      "name": "LIVE TRANSCRIPTION",
+      "category_id": 11
+    },
+    {
+      "id": 25,
+      "name": "MEETING SUMMARIES",
+      "category_id": 11
+    },
+    {
+      "id": 26,
+      "name": "ACTION ITEMS EXTRACTION",
+      "category_id": 11
+    },
+    {
+      "id": 27,
+      "name": "TEXT TO VIDEO",
+      "category_id": 12
+    },
+    {
+      "id": 28,
+      "name": "AVATAR BASED VIDEO",
+      "category_id": 12
+    },
+    {
+      "id": 29,
+      "name": "VIDEO EDITING",
+      "category_id": 12
+    },
+    {
+      "id": 30,
+      "name": "EMAIL WRITING",
+      "category_id": 13
+    },
+    {
+      "id": 31,
+      "name": "EMAIL SORTING/PRIORITIZATION",
+      "category_id": 13
+    },
+    {
+      "id": 32,
+      "name": "EMAIL SUMMARIZATION",
+      "category_id": 13
+    },
+    {
+      "id": 33,
+      "name": "GRAMMER & STYLE CHECK",
+      "category_id": 14
+    },
+    {
+      "id": 34,
+      "name": "ARGUMENT STRUCTURING",
+      "category_id": 14
+    },
+    {
+      "id": 35,
+      "name": "CRITICAL THINKING & PROOFREADING",
+      "category_id": 14
+    },
+    {
+      "id": 36,
+      "name": "CODE GENERATION",
+      "category_id": 15
+    },
+    {
+      "id": 37,
+      "name": "CODE EXPLAINATION &DEBUGGING",
+      "category_id": 15
+    },
+    {
+      "id": 38,
+      "name": "SQL & QUERY ASSISTANTS",
+      "category_id": 15
+    },
+    {
+      "id": 39,
+      "name": "GENERAL",
+      "category_id": 16
     }
   ],
   "bookmarks": [
     {
-      "id": 1,
-      "name": "Twitter",
-      "url": "https://twitter.com",
-      "description": "Social media platform",
-      "category_id": 1,
-      "subcategory_id": 1,
-      "type": "FREE",
-      "created_at": 1747139409.586646,
-      "updated_at": 1747139409.586646
-    },
-    {
-      "id": 2,
-      "name": "CNN",
-      "url": "https://cnn.com",
-      "description": "News website",
-      "category_id": 1,
-      "subcategory_id": 2,
-      "type": "FREE",
-      "created_at": 1747139409.586653,
-      "updated_at": 1747139409.586653
-    },
-    {
-      "id": 3,
-      "name": "Microsoft Office",
-      "url": "https://office.com",
-      "description": "Office suite",
-      "category_id": 2,
-      "subcategory_id": 3,
-      "type": "PAID",
-      "created_at": 1747139409.586655,
-      "updated_at": 1747139409.586655
-    },
-    {
-      "id": 4,
-      "name": "Spotify",
-      "url": "https://spotify.com",
-      "description": "Music streaming",
-      "category_id": 2,
-      "subcategory_id": 4,
+      "id": 7,
+      "name": "Zapier AI",
+      "url": "zaiper.com",
+      "description": "Automates workflows by connecting various apps and services.",
+      "category_id": 5,
+      "subcategory_id": 7,
       "type": "FREEMIUM",
-      "created_at": 1747139409.586657,
-      "updated_at": 1747139409.586657
+      "created_at": 1748767090.40521,
+      "updated_at": 1748767090.40521
     },
     {
-      "id": 5,
-      "name": "Visual Studio Code",
-      "url": "https://code.visualstudio.com",
-      "description": "Code editor",
-      "category_id": 3,
-      "subcategory_id": 5,
-      "type": "FREE",
-      "created_at": 1747139409.586659,
-      "updated_at": 1747139409.586659
+      "id": 8,
+      "name": "Integrately",
+      "url": "Integrately.com",
+      "description": "One-click automation platform for business workflows.",
+      "category_id": 5,
+      "subcategory_id": 7,
+      "type": "FREEMIUM",
+      "created_at": 1748767208.148325,
+      "updated_at": 1748767208.148325
     },
     {
-      "id": 6,
-      "name": "Adobe Photoshop",
-      "url": "https://adobe.com/photoshop",
-      "description": "Image editing software",
-      "category_id": 3,
-      "subcategory_id": 6,
+      "id": 9,
+      "name": "Make",
+      "url": "Make.com",
+      "description": "Visual platform to design, build, and automate workflows.",
+      "category_id": 5,
+      "subcategory_id": 7,
       "type": "PAID",
-      "created_at": 1747139409.586661,
-      "updated_at": 1747139409.586661
+      "created_at": 1748767273.970825,
+      "updated_at": 1748767360.601932
+    },
+    {
+      "id": 10,
+      "name": "Monday.com",
+      "url": "Monday.com",
+      "description": "Work operating system with automation capabilities.",
+      "category_id": 5,
+      "subcategory_id": 7,
+      "type": "FREEMIUM",
+      "created_at": 1748767302.281533,
+      "updated_at": 1748767302.281533
+    },
+    {
+      "id": 11,
+      "name": "N8n",
+      "url": "N8n.io",
+      "description": "Workflow automation tool with a focus on flexibility.",
+      "category_id": 5,
+      "subcategory_id": 7,
+      "type": "FREEMIUM",
+      "created_at": 1748767352.793694,
+      "updated_at": 1748767352.793694
+    },
+    {
+      "id": 12,
+      "name": "Wrike",
+      "url": "Wrike.com",
+      "description": "Project management software with automation features.",
+      "category_id": 5,
+      "subcategory_id": 7,
+      "type": "PAID",
+      "created_at": 1748767422.472279,
+      "updated_at": 1748767422.472279
+    },
+    {
+      "id": 13,
+      "name": "Replika",
+      "url": "Replika.ai",
+      "description": "AI chatbot designed to converse and provide companionship.",
+      "category_id": 5,
+      "subcategory_id": 7,
+      "type": "FREEMIUM",
+      "created_at": 1748767516.591299,
+      "updated_at": 1748767516.591299
+    },
+    {
+      "id": 14,
+      "name": "x.ai",
+      "url": "x.ai",
+      "description": "AI scheduling assistant that automates meeting planning.",
+      "category_id": 5,
+      "subcategory_id": 7,
+      "type": "PAID",
+      "created_at": 1748767560.729043,
+      "updated_at": 1748767560.729043
+    },
+    {
+      "id": 15,
+      "name": "Midjourney",
+      "url": "Midjourney.com",
+      "description": "AI program that creates images from textual descriptions.",
+      "category_id": 6,
+      "subcategory_id": 9,
+      "type": "PAID",
+      "created_at": 1748767666.429226,
+      "updated_at": 1748767666.429226
+    },
+    {
+      "id": 16,
+      "name": "DALL\u00b7E",
+      "url": "openai.com",
+      "description": "OpenAI's model generating images from text prompts.",
+      "category_id": 6,
+      "subcategory_id": 9,
+      "type": "FREEMIUM",
+      "created_at": 1748767726.43013,
+      "updated_at": 1748767726.43013
+    },
+    {
+      "id": 17,
+      "name": "Stable Diffusion",
+      "url": "stablediffusion.com",
+      "description": "Open-source model for generating images from text.",
+      "category_id": 6,
+      "subcategory_id": 9,
+      "type": "FREE",
+      "created_at": 1748767791.071348,
+      "updated_at": 1748767791.071348
+    },
+    {
+      "id": 18,
+      "name": "Remini",
+      "url": "Remini.ai",
+      "description": "Enhances old or low-quality photos using AI.",
+      "category_id": 6,
+      "subcategory_id": 10,
+      "type": "FREEMIUM",
+      "created_at": 1748767858.188732,
+      "updated_at": 1748767858.188732
+    },
+    {
+      "id": 19,
+      "name": "Let's Enhance",
+      "url": "letsenhance.io",
+      "description": "AI-powered image upscaling and enhancement tool.",
+      "category_id": 6,
+      "subcategory_id": 10,
+      "type": "FREEMIUM",
+      "created_at": 1748767913.059162,
+      "updated_at": 1748767913.059162
+    },
+    {
+      "id": 20,
+      "name": "Looka",
+      "url": "Looka.com",
+      "description": "AI-powered platform for creating brand identities.",
+      "category_id": 6,
+      "subcategory_id": 11,
+      "type": "PAID",
+      "created_at": 1748767965.026696,
+      "updated_at": 1748767965.026696
+    },
+    {
+      "id": 21,
+      "name": "Designs.ai",
+      "url": "Designs.ai",
+      "description": "Suite of tools for creating logos, videos, and more using AI.",
+      "category_id": 6,
+      "subcategory_id": 11,
+      "type": "PAID",
+      "created_at": 1748768003.035102,
+      "updated_at": 1748768003.035102
+    },
+    {
+      "id": 22,
+      "name": "Jasper",
+      "url": "jasper.ai",
+      "description": "AI writing assistant for marketing and content creation.",
+      "category_id": 7,
+      "subcategory_id": 12,
+      "type": "PAID",
+      "created_at": 1748768107.962875,
+      "updated_at": 1748768107.962875
+    },
+    {
+      "id": 23,
+      "name": "Copy.ai",
+      "url": "Copy.ai",
+      "description": "Generates marketing copy and content using AI.",
+      "category_id": 7,
+      "subcategory_id": 12,
+      "type": "FREEMIUM",
+      "created_at": 1748768149.073699,
+      "updated_at": 1748768149.073699
+    },
+    {
+      "id": 24,
+      "name": "Writesonic",
+      "url": "writesonic.com",
+      "description": "AI writer for creating articles, ads, and more.",
+      "category_id": 7,
+      "subcategory_id": 12,
+      "type": "FREEMIUM",
+      "created_at": 1748768196.408207,
+      "updated_at": 1748768196.408207
+    },
+    {
+      "id": 25,
+      "name": "Rytr",
+      "url": "Rytr.me",
+      "description": "AI writing tool for generating content quickly.",
+      "category_id": 7,
+      "subcategory_id": 12,
+      "type": "FREEMIUM",
+      "created_at": 1748768250.184649,
+      "updated_at": 1748768250.184649
+    },
+    {
+      "id": 26,
+      "name": "Sudowrite",
+      "url": "Sudowrite.com",
+      "description": "AI tool designed to assist creative writers.",
+      "category_id": 7,
+      "subcategory_id": 13,
+      "type": "PAID",
+      "created_at": 1748768303.016094,
+      "updated_at": 1748768303.016094
+    },
+    {
+      "id": 27,
+      "name": "AI Dungeon",
+      "url": "aidungeon.io",
+      "description": "Interactive storytelling game powered by AI.",
+      "category_id": 7,
+      "subcategory_id": 13,
+      "type": "FREEMIUM",
+      "created_at": 1748768340.783701,
+      "updated_at": 1748768340.783701
+    },
+    {
+      "id": 28,
+      "name": "Scite",
+      "url": "Scite.ai",
+      "description": "AI tool for discovering and evaluating scientific articles.",
+      "category_id": 7,
+      "subcategory_id": 14,
+      "type": "FREEMIUM",
+      "created_at": 1748768563.373379,
+      "updated_at": 1748768563.373379
+    },
+    {
+      "id": 29,
+      "name": "Jenni AI",
+      "url": "jenni.ai",
+      "description": "AI assistant for academic writing and research.",
+      "category_id": 7,
+      "subcategory_id": 14,
+      "type": "FREEMIUM",
+      "created_at": 1748768600.259996,
+      "updated_at": 1748768600.259996
+    },
+    {
+      "id": 30,
+      "name": "Rows",
+      "url": "Rows.com",
+      "description": "Modern spreadsheet with built-in integrations and automation.",
+      "category_id": 8,
+      "subcategory_id": 15,
+      "type": "FREEMIUM",
+      "created_at": 1748769405.132191,
+      "updated_at": 1748769405.132191
+    },
+    {
+      "id": 31,
+      "name": "SheetAI",
+      "url": "SheetAI.io",
+      "description": "Adds AI capabilities to Google Sheets for enhanced productivity.",
+      "category_id": 8,
+      "subcategory_id": 15,
+      "type": "FREEMIUM",
+      "created_at": 1748769531.855085,
+      "updated_at": 1748769531.855085
+    },
+    {
+      "id": 32,
+      "name": "MonkeyLearn",
+      "url": "MonkeyLearn.com",
+      "description": "Text analysis tool that integrates with spreadsheets.",
+      "category_id": 8,
+      "subcategory_id": 16,
+      "type": "FREEMIUM",
+      "created_at": 1748769573.226841,
+      "updated_at": 1748769573.226841
+    },
+    {
+      "id": 33,
+      "name": "Akkio",
+      "url": "Akkio.com",
+      "description": "AI platform for data analysis and predictive modeling.",
+      "category_id": 8,
+      "subcategory_id": 16,
+      "type": "PAID",
+      "created_at": 1748769617.85616,
+      "updated_at": 1748769617.85616
+    },
+    {
+      "id": 34,
+      "name": "GPT for Sheets",
+      "url": "gptforheets.com",
+      "description": "Integrates OpenAI's GPT into Google Sheets for advanced functions.",
+      "category_id": 8,
+      "subcategory_id": 17,
+      "type": "FREEMIUM",
+      "created_at": 1748769656.507698,
+      "updated_at": 1748769656.507698
+    },
+    {
+      "id": 35,
+      "name": "Clara",
+      "url": "claralabs.com",
+      "description": "Virtual employee that schedules meetings and coordinates logistics.",
+      "category_id": 9,
+      "subcategory_id": 18,
+      "type": "PAID",
+      "created_at": 1748769722.345969,
+      "updated_at": 1748769722.345969
+    },
+    {
+      "id": 36,
+      "name": "Luma Labs \u2013 Dream Machine",
+      "url": "lumalabs.ai/dream-machine",
+      "description": "Text or image to video AI tool with powerful generative capabilities.",
+      "category_id": 12,
+      "subcategory_id": 27,
+      "type": "FREEMIUM",
+      "created_at": 1748769959.960273,
+      "updated_at": 1748769959.960273
+    },
+    {
+      "id": 37,
+      "name": "Runway Gen-2",
+      "url": "runwayml.com",
+      "description": "Offers AI video creation from text or images with editing features.",
+      "category_id": 12,
+      "subcategory_id": 27,
+      "type": "FREEMIUM",
+      "created_at": 1748770012.205122,
+      "updated_at": 1748770012.205122
+    },
+    {
+      "id": 38,
+      "name": "Pika Labs",
+      "url": "pikalabs.com",
+      "description": "Generate and edit AI videos with prompts; very beginner-friendly.",
+      "category_id": 12,
+      "subcategory_id": 27,
+      "type": "FREE",
+      "created_at": 1748770039.200656,
+      "updated_at": 1748770039.200656
+    },
+    {
+      "id": 39,
+      "name": "Krikey AI",
+      "url": "krikey.ai",
+      "description": "Turn video clips into animated characters; also supports voice AI.",
+      "category_id": 12,
+      "subcategory_id": 27,
+      "type": "FREEMIUM",
+      "created_at": 1748770087.507185,
+      "updated_at": 1748770087.507185
+    },
+    {
+      "id": 40,
+      "name": "Haiper",
+      "url": "haiper.ai",
+      "description": "AI video creation platform that allows short video generation via prompts.",
+      "category_id": 12,
+      "subcategory_id": 27,
+      "type": "FREE",
+      "created_at": 1748770116.676342,
+      "updated_at": 1748770116.676342
+    },
+    {
+      "id": 41,
+      "name": "Replit AI",
+      "url": "replit.com",
+      "description": "AI-powered code completion and chat support directly in the Replit IDE.",
+      "category_id": 15,
+      "subcategory_id": 36,
+      "type": "FREEMIUM",
+      "created_at": 1748770206.964039,
+      "updated_at": 1748770206.964039
+    },
+    {
+      "id": 42,
+      "name": "Cursor",
+      "url": "cursor.so",
+      "description": "AI code editor powered by GPT-4 and Claude. Built for fast pair",
+      "category_id": 15,
+      "subcategory_id": 36,
+      "type": "FREEMIUM",
+      "created_at": 1748770249.463145,
+      "updated_at": 1748770249.463145
+    },
+    {
+      "id": 43,
+      "name": "GitHub Copilot",
+      "url": "github.com/features/copilot",
+      "description": "Code completion and contextual suggestions in VS Code, JetBrains, and more",
+      "category_id": 15,
+      "subcategory_id": 37,
+      "type": "FREE",
+      "created_at": 1748770287.505336,
+      "updated_at": 1748770287.505336
+    },
+    {
+      "id": 44,
+      "name": "ChatGPT",
+      "url": "chat.openai.com",
+      "description": "General-purpose AI chatbot with advanced reasoning and writing capabilities; supports plugins, web browsing, and image generation",
+      "category_id": 16,
+      "subcategory_id": 39,
+      "type": "FREEMIUM",
+      "created_at": 1748770382.68007,
+      "updated_at": 1748770382.68007
+    },
+    {
+      "id": 45,
+      "name": "Gemini",
+      "url": "gemini.google.com",
+      "description": "Multimodal AI chatbot integrated with Google Workspace, helpful for writing, summarizing, and searching.",
+      "category_id": 16,
+      "subcategory_id": 39,
+      "type": "FREEMIUM",
+      "created_at": 1748770423.057254,
+      "updated_at": 1748770423.057254
+    },
+    {
+      "id": 46,
+      "name": "Claude",
+      "url": "claude.ai",
+      "description": "Natural, friendly, and safety-focused chatbot known for long context memory and reasoning. Claude 3 is widely used in research and business.",
+      "category_id": 16,
+      "subcategory_id": 39,
+      "type": "FREEMIUM",
+      "created_at": 1748770464.307966,
+      "updated_at": 1748770464.307966
+    },
+    {
+      "id": 47,
+      "name": "Microsoft Copilot",
+      "url": "copilot.microsoft.com",
+      "description": "AI assistant built into Microsoft products like Word, Excel, and Edge; integrates with GPT-4 Turbo.",
+      "category_id": 16,
+      "subcategory_id": 39,
+      "type": "FREEMIUM",
+      "created_at": 1748770546.499466,
+      "updated_at": 1748770546.499466
+    },
+    {
+      "id": 48,
+      "name": "Perplexity AI",
+      "url": "perplexity.ai",
+      "description": "AI-powered search engine with source citations and up-to-date answers.",
+      "category_id": 16,
+      "subcategory_id": 39,
+      "type": "FREEMIUM",
+      "created_at": 1748770576.364181,
+      "updated_at": 1748770576.364181
+    },
+    {
+      "id": 49,
+      "name": "Grok",
+      "url": "x.ai",
+      "description": "Sarcastic, Twitter-connected chatbot with real-time knowledge from X (Twitter).",
+      "category_id": 16,
+      "subcategory_id": 39,
+      "type": "FREEMIUM",
+      "created_at": 1748770711.668179,
+      "updated_at": 1748770711.668179
+    },
+    {
+      "id": 50,
+      "name": "Meta AI",
+      "url": "https://meta.ai",
+      "description": "Integrated into Instagram, Facebook, WhatsApp, and Messenger. Includes character bots.",
+      "category_id": 16,
+      "subcategory_id": 39,
+      "type": "FREE",
+      "created_at": 1748770748.608663,
+      "updated_at": 1748770748.608663
+    },
+    {
+      "id": 51,
+      "name": "DeepSeek",
+      "url": "deepseek.com",
+      "description": "A fast, multilingual AI chatbot and open-source LLM platform developed in China, known for performance comparable to GPT-4 at lower cost.",
+      "category_id": 16,
+      "subcategory_id": 39,
+      "type": "FREE",
+      "created_at": 1748770941.651142,
+      "updated_at": 1748770941.651142
     }
   ]
 }
